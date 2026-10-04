@@ -1,45 +1,8 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visor 3D - Panel Solar</title>
-    
-    <!-- Importar el script de model-viewer -->
-    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-
-    <style>
-        body {
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-color: #1a1a1a; /* Fondo general de la página web */
-            font-family: sans-serif;
-        }
-
-        model-viewer {
-            width: 90vw;
-            height: 85vh;
-            background-color: #2b2b2b; /* Color de respaldo dentro del visor */
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Visor 3D con el modelo y el fondo HDRI -->
-    <model-viewer 
-        src="tu_modelo.glb" 
-        skybox-image="fondo_3d.hdr" 
-        environment-image="fondo_3d.hdr"
-        exposure="1"
-        shadow-intensity="1"
-        camera-controls
-        touch-action="pan-y">
-    </model-viewer>
-
-</body>
-</html>
+<model-viewer 
+    src="tu_modelo.glb" 
+    skybox-image="fondo_3d.hdr" 
+    environment-image="fondo_3d.hdr"
+    exposure="1"
+    shadow-intensity="1"
+    camera-controls>
+</model-viewer>
