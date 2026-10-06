@@ -25,7 +25,8 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
 import { EXRLoader } from 'three/addons/loaders/EXRLoader.js';
-
+import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
+  
 // ===== CAMBIA AQUÍ LAS RUTAS DE TUS ARCHIVOS =====
 // Rutas relativas: archivos subidos al mismo repositorio de GitHub.
 // También puedes usar una URL HTTPS cuyo servidor permita CORS.
@@ -84,7 +85,9 @@ function resize(){const width=container.clientWidth,height=container.clientHeigh
 new ResizeObserver(resize).observe(container);resize();
 async function loadModel(){
   try{
-    const gltf=await new GLTFLoader().loadAsync(CONFIG.modelo);
+    const loader = new GLTFLoader();
+loader.setMeshoptDecoder(MeshoptDecoder);
+const gltf = await loader.loadAsync(CONFIG.modelo);
     scene.add(gltf.scene);frameModel(gltf.scene);modelLoaded=true;
   }catch(error){warnings.push('Modelo: no se pudo cargar. Revisa la ruta del GLB y que sea válido.');console.error('Error de modelo:',error);}
   updateStatus();
