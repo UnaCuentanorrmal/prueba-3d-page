@@ -14,7 +14,7 @@
 <body>
 <div id="viewer" aria-label="Visor interactivo de modelo 3D"></div>
 <div id="status" role="status">Cargando visor…</div>
-<div class="badge">Arrastra para girar · Rueda para acercar<br>En móvil: un dedo para girar · dos para zoom</div>
+<div class="badge">Click izquierdo: girar · Click derecho: mover cámara · Rueda: zoom<br>En móvil: un dedo para girar · dos para zoom</div>
 <button id="reset" type="button">Restablecer vista</button>
 <script>
 window.addEventListener('error',()=>{document.getElementById('status').textContent='No se pudo iniciar el visor. Revisa la conexión y la consola del navegador.';});
@@ -51,7 +51,19 @@ renderer.toneMapping=THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure=CONFIG.exposicion;
 container.appendChild(renderer.domElement);
 const controls=new OrbitControls(camera,renderer.domElement);
-controls.enableDamping=true;controls.enablePan=false;
+controls.enableDamping=true;
+controls.enablePan=true;
+
+// Mouse:
+// Izquierdo = rotar
+// Derecho = mover/desplazar la cámara
+// Rueda = zoom
+controls.mouseButtons.LEFT = THREE.MOUSE.ROTATE;
+controls.mouseButtons.MIDDLE = THREE.MOUSE.DOLLY;
+controls.mouseButtons.RIGHT = THREE.MOUSE.PAN;
+
+// Evita que aparezca el menú contextual con clic derecho
+renderer.domElement.addEventListener('contextmenu', event => event.preventDefault());
 const initialPosition=new THREE.Vector3(4,3,5);
 const initialTarget=new THREE.Vector3();camera.position.copy(initialPosition);
 const fallbackLights=new THREE.Group();
