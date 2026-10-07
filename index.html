@@ -9,26 +9,35 @@
 html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#151922;color:#eef2f8;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
 #viewer{position:fixed;inset:0}
 canvas{display:block;touch-action:none}
-#status{position:fixed;left:50%;top:16px;transform:translateX(-50%);z-index:30;max-width:92vw;padding:9px 14px;border-radius:11px;background:#0f172ad9;border:1px solid #ffffff20;font-size:12px;text-align:center;backdrop-filter:blur(10px)}
-#reset{position:fixed;right:16px;bottom:16px;z-index:30;padding:11px 14px;border-radius:11px;border:1px solid #ffffff2b;background:#0f172ad9;color:#fff;cursor:pointer;backdrop-filter:blur(10px)}
-#help{position:fixed;left:16px;bottom:16px;z-index:30;padding:10px 13px;border-radius:11px;border:1px solid #ffffff20;background:#0f172acb;font-size:12px;line-height:1.45;pointer-events:none;backdrop-filter:blur(10px)}
+#status{position:fixed;left:50%;top:16px;transform:translateX(-50%);z-index:40;max-width:92vw;padding:9px 14px;border-radius:11px;background:#0f172ad9;border:1px solid #ffffff20;font-size:12px;text-align:center;backdrop-filter:blur(10px)}
+#reset{position:fixed;right:16px;bottom:16px;z-index:40;padding:11px 14px;border-radius:11px;border:1px solid #ffffff2b;background:#0f172ad9;color:#fff;cursor:pointer;backdrop-filter:blur(10px)}
+#help{position:fixed;left:16px;bottom:16px;z-index:40;padding:10px 13px;border-radius:11px;border:1px solid #ffffff20;background:#0f172acb;font-size:12px;line-height:1.45;pointer-events:none;backdrop-filter:blur(10px)}
 
 #connectors{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:18;overflow:visible}
-.connector{stroke:rgba(255,255,255,.58);stroke-width:1.5;vector-effect:non-scaling-stroke}
-.connector-dot{fill:#fff;stroke:rgba(15,23,42,.9);stroke-width:4;vector-effect:non-scaling-stroke}
+.connector{stroke:rgba(255,255,255,.65);stroke-width:1.7;vector-effect:non-scaling-stroke}
+.connector-dot{fill:#fff;stroke:rgba(15,23,42,.95);stroke-width:3.5;vector-effect:non-scaling-stroke}
 
-#cards{position:fixed;inset:0;pointer-events:none;z-index:20}
-.component-card{position:absolute;width:220px;transform:translateX(-50%);padding:11px 12px 10px;border-radius:14px;background:rgba(15,23,42,.93);border:1px solid rgba(255,255,255,.2);box-shadow:0 14px 36px rgba(0,0,0,.38);backdrop-filter:blur(12px);color:#eef2f8;transition:opacity .12s ease;font-size:11px;line-height:1.36}
-.component-card.hidden{opacity:0;visibility:hidden}
-.component-card h3{margin:0 0 6px;display:flex;align-items:center;gap:7px;font-size:13px;line-height:1.15;color:#fff}
-.component-card .num{width:22px;height:22px;flex:0 0 22px;border-radius:50%;display:grid;place-items:center;background:#fff;color:#111827;font-size:11px;font-weight:900}
-.component-card p{margin:4px 0;color:#dce6f3}
-.component-card strong{color:#fff}
+#labels{position:fixed;inset:0;pointer-events:none;z-index:22}
+.component-ui{position:absolute;left:0;top:0;transform:translate(-50%,-50%);pointer-events:auto;will-change:left,top}
+.control-row{display:flex;align-items:center;gap:6px;filter:drop-shadow(0 8px 18px rgba(0,0,0,.36))}
+.number-badge,.toggle-info{height:30px;border:1px solid rgba(255,255,255,.32);background:rgba(15,23,42,.94);color:#fff;backdrop-filter:blur(10px)}
+.number-badge{min-width:30px;padding:0 9px;border-radius:999px;display:grid;place-items:center;font-weight:900;font-size:12px;pointer-events:none}
+.toggle-info{border-radius:999px;padding:0 12px;cursor:pointer;font-weight:800;font-size:11px;letter-spacing:.01em;transition:background .15s ease,transform .15s ease}
+.toggle-info:hover{background:#243148;transform:translateY(-1px)}
+.toggle-info[aria-expanded="true"]{background:#2d3d58}
+.info-card{position:absolute;left:50%;top:38px;transform:translateX(-50%);width:230px;padding:11px 12px 10px;border-radius:14px;background:rgba(15,23,42,.96);border:1px solid rgba(255,255,255,.2);box-shadow:0 16px 40px rgba(0,0,0,.42);backdrop-filter:blur(14px);color:#eef2f8;font-size:11px;line-height:1.38;transition:opacity .14s ease,transform .14s ease,visibility .14s ease}
+.info-card.hidden{opacity:0;visibility:hidden;transform:translate(-50%,-5px);pointer-events:none}
+.info-card h3{margin:0 0 7px;font-size:13px;line-height:1.2;color:#fff}
+.info-card p{margin:4px 0;color:#dce6f3}
+.info-card strong{color:#fff}
+.component-ui.offscreen{display:none}
 
 @media(max-width:700px){
-  .component-card{width:158px;padding:8px 9px 8px;border-radius:12px;font-size:9.5px;line-height:1.28}
-  .component-card h3{font-size:11px;margin-bottom:5px;gap:5px}
-  .component-card .num{width:19px;height:19px;flex-basis:19px;font-size:10px}
+  .number-badge,.toggle-info{height:28px}
+  .number-badge{min-width:28px;padding:0 8px;font-size:11px}
+  .toggle-info{padding:0 10px;font-size:10px}
+  .info-card{width:min(190px,62vw);top:35px;padding:9px 10px;font-size:9.8px;line-height:1.3}
+  .info-card h3{font-size:11px;margin-bottom:5px}
   #help{left:8px;bottom:8px;right:102px;font-size:10px;padding:8px 9px}
   #help br{display:none}
   #reset{right:8px;bottom:8px;padding:9px 10px;font-size:11px}
@@ -42,9 +51,9 @@ canvas{display:block;touch-action:none}
 <body>
 <div id="viewer" aria-label="Visor interactivo del solar tracker"></div>
 <svg id="connectors" aria-hidden="true"></svg>
-<div id="cards" aria-label="Información de componentes"></div>
+<div id="labels" aria-label="Controles de información de componentes"></div>
 <div id="status" role="status">Cargando visor…</div>
-<div id="help">Izquierdo: rotar · Derecho: mover · Rueda: zoom<br>En móvil: un dedo para girar · dos para zoom</div>
+<div id="help">Izquierdo: rotar · Derecho: mover · Rueda: zoom<br>Presiona “Info” junto al número para mostrar u ocultar la tarjeta</div>
 <button id="reset" type="button">Restablecer vista</button>
 
 <script type="module">
@@ -65,63 +74,24 @@ const CONFIG={
 };
 
 /*
-  IMPORTANTE:
-  Estas referencias ya NO son posiciones aproximadas.
-  Se tomaron de los nombres reales de los nodos del panel-v1.glb que subiste.
+  offsetDesktop / offsetMobile fijan una dirección estable en pantalla.
+  Ya no se usa un algoritmo que "reordena" las tarjetas mientras giras.
 */
 const COMPONENTES=[
-  {
-    numero:1,
-    nombre:'Servomotores SG90',
-    nodos:['Sketchfab_model','Sketchfab_model002'],
-    que:'Actuadores que pueden girar hasta una posición angular controlada.',
-    funcion:'Reciben órdenes del Arduino y mueven la estructura para orientar el panel hacia la zona con mayor luz.'
-  },
-  {
-    numero:2,
-    nombre:'Arduino Nano',
-    nodos:['Scene_1'],
-    que:'Microcontrolador que ejecuta el programa del sistema.',
-    funcion:'Lee los sensores LDR, compara la intensidad de luz y decide cuánto deben girar los servomotores.'
-  },
-  {
-    numero:3,
-    nombre:'Protoboard',
-    nodos:['Sketchfab_model001'],
-    que:'Placa de pruebas para conectar componentes sin soldar.',
-    funcion:'Interconecta Arduino, sensores, resistencias y alimentación durante el prototipado del solar tracker.'
-  },
-  {
-    numero:4,
-    nombre:'Resistencias 10 kΩ',
-    nodos:['Sketchfab_model003','Sketchfab_model009','Sketchfab_model010','Sketchfab_model011'],
-    que:'Componentes eléctricos que controlan la relación entre corriente y voltaje.',
-    funcion:'Junto con los LDR forman divisores de tensión para convertir los cambios de luz en señales que el Arduino puede medir.'
-  },
-  {
-    numero:5,
-    nombre:'Sensores LDR',
-    nodos:['Sketchfab_model005','Sketchfab_model006','Sketchfab_model007','Sketchfab_model008'],
-    que:'Fotoresistencias cuya resistencia varía según la cantidad de luz recibida.',
-    funcion:'Actúan como los ojos del tracker: sus diferencias de lectura indican hacia qué dirección debe moverse el panel.'
-  },
-  {
-    numero:6,
-    nombre:'Panel solar',
-    nodos:['Sketchfab_model012'],
-    que:'Conjunto de celdas fotovoltaicas que transforma la radiación solar en electricidad.',
-    funcion:'Es el elemento que el sistema orienta para mantener una incidencia de luz más favorable y mejorar la captación de energía.'
-  }
+  {numero:1,nombre:'Servomotores SG90',nodos:['Sketchfab_model','Sketchfab_model002'],offsetDesktop:{x:-120,y:18},offsetMobile:{x:-82,y:10},que:'Actuadores que pueden girar hasta una posición angular controlada.',funcion:'Reciben órdenes del Arduino y mueven la estructura para orientar el panel hacia la zona con mayor luz.'},
+  {numero:2,nombre:'Arduino Nano',nodos:['Scene_1'],offsetDesktop:{x:105,y:-18},offsetMobile:{x:72,y:-12},que:'Microcontrolador que ejecuta el programa del sistema.',funcion:'Lee los sensores LDR, compara la intensidad de luz y decide cuánto deben girar los servomotores.'},
+  {numero:3,nombre:'Protoboard',nodos:['Sketchfab_model001'],offsetDesktop:{x:125,y:45},offsetMobile:{x:78,y:34},que:'Placa de pruebas para conectar componentes sin soldar.',funcion:'Interconecta Arduino, sensores, resistencias y alimentación durante el prototipado del solar tracker.'},
+  {numero:4,nombre:'Resistencias 10 kΩ',nodos:['Sketchfab_model003','Sketchfab_model009','Sketchfab_model010','Sketchfab_model011'],offsetDesktop:{x:-125,y:55},offsetMobile:{x:-82,y:42},que:'Componentes eléctricos que controlan la relación entre corriente y voltaje.',funcion:'Junto con los LDR forman divisores de tensión para convertir los cambios de luz en señales que el Arduino puede medir.'},
+  {numero:5,nombre:'Sensores LDR',nodos:['Sketchfab_model005','Sketchfab_model006','Sketchfab_model007','Sketchfab_model008'],offsetDesktop:{x:105,y:-45},offsetMobile:{x:72,y:-36},que:'Fotoresistencias cuya resistencia varía según la cantidad de luz recibida.',funcion:'Actúan como los ojos del tracker: sus diferencias de lectura indican hacia qué dirección debe moverse el panel.'},
+  {numero:6,nombre:'Panel solar',nodos:['Sketchfab_model012'],offsetDesktop:{x:125,y:65},offsetMobile:{x:78,y:48},que:'Conjunto de celdas fotovoltaicas que transforma la radiación solar en electricidad.',funcion:'Es el elemento que el sistema orienta para mantener una incidencia de luz más favorable y mejorar la captación de energía.'}
 ];
 
 const viewer=document.getElementById('viewer');
 const status=document.getElementById('status');
-const cardsLayer=document.getElementById('cards');
+const labelsLayer=document.getElementById('labels');
 const connectors=document.getElementById('connectors');
-
 const scene=new THREE.Scene();
 scene.background=new THREE.Color(CONFIG.colorFondo);
-
 const camera=new THREE.PerspectiveCamera(45,1,.01,1000);
 const renderer=new THREE.WebGLRenderer({antialias:true});
 renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
@@ -144,25 +114,36 @@ camera.position.copy(initialPosition);
 
 const fallbackLights=new THREE.Group();
 fallbackLights.add(new THREE.HemisphereLight(0xe0efff,0x555566,2));
-const sun=new THREE.DirectionalLight(0xffffff,3);
-sun.position.set(4,6,5);
-fallbackLights.add(sun);
-scene.add(fallbackLights);
+const sun=new THREE.DirectionalLight(0xffffff,3);sun.position.set(4,6,5);fallbackLights.add(sun);scene.add(fallbackLights);
 
-let modelRoot=null;
-let modelLoaded=false;
-let envLoaded=false;
+let modelRoot=null,modelLoaded=false,envLoaded=false;
 const warnings=[];
 const ui=[];
 
-function makeCard(component){
-  const card=document.createElement('article');
-  card.className='component-card hidden';
-  card.innerHTML=`
-    <h3><span class="num">${component.numero}</span>${component.nombre}</h3>
-    <p><strong>Qué es:</strong> ${component.que}</p>
-    <p><strong>En el tracker:</strong> ${component.funcion}</p>`;
-  cardsLayer.appendChild(card);
+function makeUI(component){
+  const wrap=document.createElement('div');
+  wrap.className='component-ui offscreen';
+  wrap.innerHTML=`
+    <div class="control-row">
+      <div class="number-badge">${component.numero}</div>
+      <button class="toggle-info" type="button" aria-expanded="false">Info</button>
+    </div>
+    <article class="info-card hidden">
+      <h3>${component.nombre}</h3>
+      <p><strong>Qué es:</strong> ${component.que}</p>
+      <p><strong>En el tracker:</strong> ${component.funcion}</p>
+    </article>`;
+  labelsLayer.appendChild(wrap);
+
+  const button=wrap.querySelector('.toggle-info');
+  const card=wrap.querySelector('.info-card');
+  button.addEventListener('click',e=>{
+    e.stopPropagation();
+    const open=button.getAttribute('aria-expanded')==='true';
+    button.setAttribute('aria-expanded',String(!open));
+    button.textContent=open?'Info':'Ocultar';
+    card.classList.toggle('hidden',open);
+  });
 
   const line=document.createElementNS('http://www.w3.org/2000/svg','line');
   line.setAttribute('class','connector');
@@ -171,50 +152,18 @@ function makeCard(component){
   dot.setAttribute('r','4');
   connectors.append(line,dot);
 
-  ui.push({component,card,line,dot,objects:[]});
+  ui.push({component,wrap,button,card,line,dot,objects:[],anchorWorld:null,x:null,y:null});
 }
-COMPONENTES.forEach(makeCard);
+COMPONENTES.forEach(makeUI);
 
-function resolveNodes(){
+function resolveNodesAndAnchors(){
   ui.forEach(item=>{
-    item.objects=item.component.nodos
-      .map(name=>modelRoot.getObjectByName(name))
-      .filter(Boolean);
-    if(item.objects.length!==item.component.nodos.length){
-      console.warn('No se encontraron todos los nodos de',item.component.nombre,item.component.nodos,item.objects);
-    }
+    item.objects=item.component.nodos.map(n=>modelRoot.getObjectByName(n)).filter(Boolean);
+    const box=new THREE.Box3().makeEmpty();
+    item.objects.forEach(obj=>{obj.updateWorldMatrix(true,true);box.union(new THREE.Box3().setFromObject(obj));});
+    item.anchorWorld=box.isEmpty()?null:box.getCenter(new THREE.Vector3());
+    if(item.objects.length!==item.component.nodos.length)console.warn('Faltan nodos de',item.component.nombre);
   });
-}
-
-function componentBox(objects){
-  const box=new THREE.Box3();
-  box.makeEmpty();
-  objects.forEach(obj=>{
-    obj.updateWorldMatrix(true,true);
-    box.union(new THREE.Box3().setFromObject(obj));
-  });
-  return box;
-}
-
-function projectBox(box,w,h){
-  if(box.isEmpty())return null;
-  const mn=box.min,mx=box.max;
-  const corners=[
-    [mn.x,mn.y,mn.z],[mx.x,mn.y,mn.z],[mn.x,mx.y,mn.z],[mx.x,mx.y,mn.z],
-    [mn.x,mn.y,mx.z],[mx.x,mn.y,mx.z],[mn.x,mx.y,mx.z],[mx.x,mx.y,mx.z]
-  ];
-  const pts=[];
-  for(const c of corners){
-    const v=new THREE.Vector3(...c).project(camera);
-    if(!Number.isFinite(v.x)||!Number.isFinite(v.y)||!Number.isFinite(v.z))continue;
-    pts.push({x:(v.x+1)*.5*w,y:(1-v.y)*.5*h,z:v.z});
-  }
-  if(!pts.length)return null;
-  return {
-    minX:Math.min(...pts.map(p=>p.x)),maxX:Math.max(...pts.map(p=>p.x)),
-    minY:Math.min(...pts.map(p=>p.y)),maxY:Math.max(...pts.map(p=>p.y)),
-    z:pts.reduce((a,p)=>a+p.z,0)/pts.length
-  };
 }
 
 function clamp(v,min,max){return Math.max(min,Math.min(max,v));}
@@ -223,80 +172,53 @@ function updateComponentUI(){
   if(!modelLoaded)return;
   const w=window.innerWidth,h=window.innerHeight;
   const mobile=w<=700;
-  const cardW=mobile?158:220;
-  const margin=mobile?7:10;
-
-  const placed=[];
+  const margin=mobile?12:16;
 
   for(const item of ui){
-    if(!item.objects.length){hideItem(item);continue;}
-    const box=componentBox(item.objects);
-    const screen=projectBox(box,w,h);
-    if(!screen || screen.z<-1.3 || screen.z>1.3 || screen.maxX<-50 || screen.minX>w+50 || screen.maxY<-50 || screen.minY>h+50){
-      hideItem(item);continue;
-    }
+    if(!item.anchorWorld){hideItem(item);continue;}
 
-    item.card.classList.remove('hidden');
+    const v=item.anchorWorld.clone().project(camera);
+    const visible=v.z>-1&&v.z<1&&v.x>-1.15&&v.x<1.15&&v.y>-1.15&&v.y<1.15;
+    if(!visible){hideItem(item);continue;}
+
+    item.wrap.classList.remove('offscreen');
     item.line.style.display='';
     item.dot.style.display='';
 
-    const cardH=item.card.offsetHeight||90;
-    let x=(screen.minX+screen.maxX)/2;
-    let y=screen.maxY+(mobile?8:12);
+    const anchorX=(v.x+1)*.5*w;
+    const anchorY=(1-v.y)*.5*h;
+    const off=mobile?item.component.offsetMobile:item.component.offsetDesktop;
+    const halfW=(item.wrap.offsetWidth||92)/2;
+    const targetX=clamp(anchorX+off.x,halfW+margin,w-halfW-margin);
+    const targetY=clamp(anchorY+off.y,24+margin,h-60-margin);
 
-    x=clamp(x,cardW/2+margin,w-cardW/2-margin);
-    y=clamp(y,margin,h-cardH-margin);
+    // Suavizado: evita pequeños saltos al rotar la cámara.
+    if(item.x===null){item.x=targetX;item.y=targetY;}
+    item.x+=(targetX-item.x)*0.22;
+    item.y+=(targetY-item.y)*0.22;
+    item.wrap.style.left=item.x+'px';
+    item.wrap.style.top=item.y+'px';
 
-    /* Separación sencilla para que las tarjetas no se monten entre sí. */
-    let attempts=0;
-    while(attempts<10){
-      const rect={left:x-cardW/2,right:x+cardW/2,top:y,bottom:y+cardH};
-      const hit=placed.find(r=>!(rect.right<r.left || rect.left>r.right || rect.bottom<r.top || rect.top>r.bottom));
-      if(!hit)break;
-      y=hit.bottom+8;
-      if(y+cardH>h-margin){
-        y=Math.max(margin,screen.minY-cardH-10);
-        x=clamp(x+(attempts%2===0?cardW*.72:-cardW*.72),cardW/2+margin,w-cardW/2-margin);
-      }
-      attempts++;
-    }
-
-    item.card.style.left=x+'px';
-    item.card.style.top=y+'px';
-    placed.push({left:x-cardW/2,right:x+cardW/2,top:y,bottom:y+cardH});
-
-    const anchorX=clamp((screen.minX+screen.maxX)/2,0,w);
-    const anchorY=clamp(screen.maxY,0,h);
-    const lineEndX=x;
-    const lineEndY=y;
     item.line.setAttribute('x1',anchorX);
     item.line.setAttribute('y1',anchorY);
-    item.line.setAttribute('x2',lineEndX);
-    item.line.setAttribute('y2',lineEndY);
+    item.line.setAttribute('x2',item.x);
+    item.line.setAttribute('y2',item.y);
     item.dot.setAttribute('cx',anchorX);
     item.dot.setAttribute('cy',anchorY);
   }
 }
 
 function hideItem(item){
-  item.card.classList.add('hidden');
+  item.wrap.classList.add('offscreen');
   item.line.style.display='none';
   item.dot.style.display='none';
+  item.x=item.y=null;
 }
 
 function updateStatus(){
-  if(!modelLoaded){
-    status.hidden=false;
-    status.textContent=warnings.some(w=>w.startsWith('Modelo'))?warnings.join(' · '):'Cargando modelo…';
-    return;
-  }
-  if(CONFIG.hdri&&!envLoaded&&!warnings.some(w=>w.startsWith('HDRI'))){
-    status.hidden=false;
-    status.textContent='Modelo listo · cargando HDRI…';
-    return;
-  }
-  status.textContent=warnings.join(' · ');
-  status.hidden=warnings.length===0;
+  if(!modelLoaded){status.hidden=false;status.textContent=warnings.some(w=>w.startsWith('Modelo'))?warnings.join(' · '):'Cargando modelo…';return;}
+  if(CONFIG.hdri&&!envLoaded&&!warnings.some(w=>w.startsWith('HDRI'))){status.hidden=false;status.textContent='Modelo listo · cargando HDRI…';return;}
+  status.textContent=warnings.join(' · ');status.hidden=warnings.length===0;
 }
 
 function frameModel(model){
@@ -310,76 +232,39 @@ function frameModel(model){
   const distance=radius/Math.sin(Math.min(vfov,hfov)/2)*1.15;
   initialTarget.copy(center);
   initialPosition.copy(center).add(new THREE.Vector3(1,.6,1).normalize().multiplyScalar(distance));
-  camera.near=Math.max(radius/1000,.000001);
-  camera.far=Math.max(radius*100,distance*10);
-  camera.updateProjectionMatrix();
-  controls.minDistance=radius*.15;
-  controls.maxDistance=distance*6;
-  resetView();
+  camera.near=Math.max(radius/1000,.000001);camera.far=Math.max(radius*100,distance*10);camera.updateProjectionMatrix();
+  controls.minDistance=radius*.15;controls.maxDistance=distance*6;resetView();
 }
-
-function resetView(){
-  camera.position.copy(initialPosition);
-  controls.target.copy(initialTarget);
-  controls.update();
-}
+function resetView(){camera.position.copy(initialPosition);controls.target.copy(initialTarget);controls.update();}
 document.getElementById('reset').onclick=resetView;
 
 function resize(){
   const w=viewer.clientWidth,h=viewer.clientHeight;
-  renderer.setSize(w,h);
-  camera.aspect=w/h;
-  camera.updateProjectionMatrix();
+  renderer.setSize(w,h);camera.aspect=w/h;camera.updateProjectionMatrix();
   connectors.setAttribute('viewBox',`0 0 ${window.innerWidth} ${window.innerHeight}`);
 }
-new ResizeObserver(resize).observe(viewer);
-resize();
+new ResizeObserver(resize).observe(viewer);resize();
 
 async function loadModel(){
   try{
-    const loader=new GLTFLoader();
-    loader.setMeshoptDecoder(MeshoptDecoder);
-    const gltf=await loader.loadAsync(CONFIG.modelo);
-    modelRoot=gltf.scene;
-    scene.add(modelRoot);
-    frameModel(modelRoot);
-    resolveNodes();
-    modelLoaded=true;
-  }catch(error){
-    warnings.push('Modelo: no se pudo cargar. Revisa la ruta del GLB y que sea válido.');
-    console.error('Error de modelo:',error);
-  }
+    const loader=new GLTFLoader();loader.setMeshoptDecoder(MeshoptDecoder);
+    const gltf=await loader.loadAsync(CONFIG.modelo);modelRoot=gltf.scene;scene.add(modelRoot);frameModel(modelRoot);resolveNodesAndAnchors();modelLoaded=true;
+  }catch(error){warnings.push('Modelo: no se pudo cargar. Revisa la ruta del GLB y que sea válido.');console.error(error);}
   updateStatus();
 }
-
 async function loadEnvironment(){
   if(!CONFIG.hdri){updateStatus();return;}
   try{
     const path=new URL(CONFIG.hdri,document.baseURI).pathname.toLowerCase();
     const loader=path.endsWith('.exr')?new EXRLoader():new RGBELoader();
-    const texture=await loader.loadAsync(CONFIG.hdri);
-    texture.mapping=THREE.EquirectangularReflectionMapping;
-    scene.environment=texture;
-    if(CONFIG.mostrarHDRIComoFondo)scene.background=texture;
-    const angle=THREE.MathUtils.degToRad(CONFIG.giroHDRI);
-    scene.environmentRotation.y=angle;
-    scene.backgroundRotation.y=angle;
-    fallbackLights.visible=false;
-    envLoaded=true;
-  }catch(error){
-    warnings.push('HDRI: no se pudo cargar. Se usa iluminación de respaldo.');
-    console.error('Error de HDRI:',error);
-  }
+    const texture=await loader.loadAsync(CONFIG.hdri);texture.mapping=THREE.EquirectangularReflectionMapping;scene.environment=texture;if(CONFIG.mostrarHDRIComoFondo)scene.background=texture;
+    const angle=THREE.MathUtils.degToRad(CONFIG.giroHDRI);scene.environmentRotation.y=angle;scene.backgroundRotation.y=angle;fallbackLights.visible=false;envLoaded=true;
+  }catch(error){warnings.push('HDRI: no se pudo cargar. Se usa iluminación de respaldo.');console.error(error);}
   updateStatus();
 }
 
-loadModel();
-loadEnvironment();
-renderer.setAnimationLoop(()=>{
-  controls.update();
-  updateComponentUI();
-  renderer.render(scene,camera);
-});
+loadModel();loadEnvironment();
+renderer.setAnimationLoop(()=>{controls.update();updateComponentUI();renderer.render(scene,camera);});
 </script>
 </body>
 </html>
