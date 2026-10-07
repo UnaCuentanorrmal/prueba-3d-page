@@ -53,7 +53,7 @@ canvas{display:block;touch-action:none}
 <svg id="connectors" aria-hidden="true"></svg>
 <div id="labels" aria-label="Controles de información de componentes"></div>
 <div id="status" role="status">Cargando visor…</div>
-<div id="help">Izquierdo: rotar · Derecho: mover · Rueda: zoom<br>Presiona “Info” junto al número para mostrar u ocultar la tarjeta</div>
+<div id="help">Izquierdo: rotar · Derecho: mover · Rueda: zoom<br>Presiona el nombre corto junto al número para mostrar u ocultar la tarjeta</div>
 <button id="reset" type="button">Restablecer vista</button>
 
 <script type="module">
@@ -78,12 +78,12 @@ const CONFIG={
   Ya no se usa un algoritmo que "reordena" las tarjetas mientras giras.
 */
 const COMPONENTES=[
-  {numero:1,nombre:'Servomotores SG90',nodos:['Sketchfab_model','Sketchfab_model002'],offsetDesktop:{x:-120,y:18},offsetMobile:{x:-82,y:10},que:'Actuadores que pueden girar hasta una posición angular controlada.',funcion:'Reciben órdenes del Arduino y mueven la estructura para orientar el panel hacia la zona con mayor luz.'},
-  {numero:2,nombre:'Arduino Nano',nodos:['Scene_1'],offsetDesktop:{x:105,y:-18},offsetMobile:{x:72,y:-12},que:'Microcontrolador que ejecuta el programa del sistema.',funcion:'Lee los sensores LDR, compara la intensidad de luz y decide cuánto deben girar los servomotores.'},
-  {numero:3,nombre:'Protoboard',nodos:['Sketchfab_model001'],offsetDesktop:{x:125,y:45},offsetMobile:{x:78,y:34},que:'Placa de pruebas para conectar componentes sin soldar.',funcion:'Interconecta Arduino, sensores, resistencias y alimentación durante el prototipado del solar tracker.'},
-  {numero:4,nombre:'Resistencias 10 kΩ',nodos:['Sketchfab_model003','Sketchfab_model009','Sketchfab_model010','Sketchfab_model011'],offsetDesktop:{x:-125,y:55},offsetMobile:{x:-82,y:42},que:'Componentes eléctricos que controlan la relación entre corriente y voltaje.',funcion:'Junto con los LDR forman divisores de tensión para convertir los cambios de luz en señales que el Arduino puede medir.'},
-  {numero:5,nombre:'Sensores LDR',nodos:['Sketchfab_model005','Sketchfab_model006','Sketchfab_model007','Sketchfab_model008'],offsetDesktop:{x:105,y:-45},offsetMobile:{x:72,y:-36},que:'Fotoresistencias cuya resistencia varía según la cantidad de luz recibida.',funcion:'Actúan como los ojos del tracker: sus diferencias de lectura indican hacia qué dirección debe moverse el panel.'},
-  {numero:6,nombre:'Panel solar',nodos:['Sketchfab_model012'],offsetDesktop:{x:125,y:65},offsetMobile:{x:78,y:48},que:'Conjunto de celdas fotovoltaicas que transforma la radiación solar en electricidad.',funcion:'Es el elemento que el sistema orienta para mantener una incidencia de luz más favorable y mejorar la captación de energía.'}
+  {numero:1,corto:'Servo',nombre:'Servomotores SG90',nodos:['Sketchfab_model','Sketchfab_model002'],offsetDesktop:{x:-120,y:18},offsetMobile:{x:-82,y:10},que:'Actuadores que pueden girar hasta una posición angular controlada.',funcion:'Reciben órdenes del Arduino y mueven la estructura para orientar el panel hacia la zona con mayor luz.'},
+  {numero:2,corto:'Arduino',nombre:'Arduino Nano',nodos:['Scene_1'],offsetDesktop:{x:105,y:-18},offsetMobile:{x:72,y:-12},que:'Microcontrolador que ejecuta el programa del sistema.',funcion:'Lee los sensores LDR, compara la intensidad de luz y decide cuánto deben girar los servomotores.'},
+  {numero:3,corto:'Protoboard',nombre:'Protoboard',nodos:['Sketchfab_model001'],offsetDesktop:{x:125,y:45},offsetMobile:{x:78,y:34},que:'Placa de pruebas para conectar componentes sin soldar.',funcion:'Interconecta Arduino, sensores, resistencias y alimentación durante el prototipado del solar tracker.'},
+  {numero:4,corto:'Resistor',nombre:'Resistencias 10 kΩ',nodos:['Sketchfab_model003','Sketchfab_model009','Sketchfab_model010','Sketchfab_model011'],offsetDesktop:{x:-125,y:55},offsetMobile:{x:-82,y:42},que:'Componentes eléctricos que controlan la relación entre corriente y voltaje.',funcion:'Junto con los LDR forman divisores de tensión para convertir los cambios de luz en señales que el Arduino puede medir.'},
+  {numero:5,corto:'LDR',nombre:'Sensores LDR',nodos:['Sketchfab_model005','Sketchfab_model006','Sketchfab_model007','Sketchfab_model008'],offsetDesktop:{x:105,y:-45},offsetMobile:{x:72,y:-36},que:'Fotoresistencias cuya resistencia varía según la cantidad de luz recibida.',funcion:'Actúan como los ojos del tracker: sus diferencias de lectura indican hacia qué dirección debe moverse el panel.'},
+  {numero:6,corto:'Panel',nombre:'Panel solar',nodos:['Sketchfab_model012'],offsetDesktop:{x:125,y:65},offsetMobile:{x:78,y:48},que:'Conjunto de celdas fotovoltaicas que transforma la radiación solar en electricidad.',funcion:'Es el elemento que el sistema orienta para mantener una incidencia de luz más favorable y mejorar la captación de energía.'}
 ];
 
 const viewer=document.getElementById('viewer');
@@ -126,7 +126,7 @@ function makeUI(component){
   wrap.innerHTML=`
     <div class="control-row">
       <div class="number-badge">${component.numero}</div>
-      <button class="toggle-info" type="button" aria-expanded="false">Info</button>
+      <button class="toggle-info" type="button" aria-expanded="false">${component.corto}</button>
     </div>
     <article class="info-card hidden">
       <h3>${component.nombre}</h3>
@@ -141,7 +141,7 @@ function makeUI(component){
     e.stopPropagation();
     const open=button.getAttribute('aria-expanded')==='true';
     button.setAttribute('aria-expanded',String(!open));
-    button.textContent=open?'Info':'Ocultar';
+    button.textContent=component.corto;
     card.classList.toggle('hidden',open);
   });
 
