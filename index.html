@@ -6,55 +6,33 @@
 <title>Visor 3D - Solar Tracker</title>
 <style>
 *{box-sizing:border-box}
-html,body{margin:0;background:#151922;color:#eef2f8;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
-body{overflow-x:hidden}
-#app{width:100%}
-#viewerWrap{position:relative;width:100%;height:100dvh;background:#151922;overflow:hidden}
-#viewer{width:100%;height:100%}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#151922;color:#eef2f8;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+#viewer{position:fixed;inset:0}
 canvas{display:block;touch-action:none}
-#status{position:absolute;left:50%;top:18px;transform:translateX(-50%);max-width:min(92vw,680px);padding:10px 16px;background:#111d;border-radius:12px;font-size:13px;text-align:center;z-index:15}
-#reset{position:absolute;right:20px;bottom:20px;border:1px solid #ffffff30;border-radius:12px;background:#111c;color:#fff;padding:12px 16px;cursor:pointer;z-index:15;backdrop-filter:blur(10px)}
-#reset:hover{background:#334155}
-.badge{position:absolute;left:20px;bottom:20px;padding:12px 16px;background:#111c;border:1px solid #ffffff20;border-radius:12px;pointer-events:none;font-size:13px;line-height:1.5;z-index:14;backdrop-filter:blur(10px)}
+#status{position:fixed;left:50%;top:16px;transform:translateX(-50%);z-index:30;max-width:92vw;padding:9px 14px;border-radius:11px;background:#0f172ad9;border:1px solid #ffffff20;font-size:12px;text-align:center;backdrop-filter:blur(10px)}
+#reset{position:fixed;right:16px;bottom:16px;z-index:30;padding:11px 14px;border-radius:11px;border:1px solid #ffffff2b;background:#0f172ad9;color:#fff;cursor:pointer;backdrop-filter:blur(10px)}
+#help{position:fixed;left:16px;bottom:16px;z-index:30;padding:10px 13px;border-radius:11px;border:1px solid #ffffff20;background:#0f172acb;font-size:12px;line-height:1.45;pointer-events:none;backdrop-filter:blur(10px)}
 
-.overlay-layer{position:absolute;inset:0;pointer-events:none;z-index:11}
-.component-anchor{position:absolute;left:0;top:0;transform:translate(-50%,-50%);pointer-events:none}
-.pin{position:absolute;left:0;top:0;width:28px;height:28px;border-radius:999px;border:2px solid #ffffff66;background:#0f172a;color:#fff;display:grid;place-items:center;font-size:12px;font-weight:800;box-shadow:0 6px 18px #0006}
-.component-card{position:absolute;left:0;top:0;width:220px;padding:12px 12px 11px;border-radius:16px;background:rgba(15,23,42,.92);border:1px solid rgba(255,255,255,.18);box-shadow:0 16px 40px rgba(0,0,0,.38);backdrop-filter:blur(12px);pointer-events:auto}
-.component-card h3{margin:0 0 8px;font-size:14px;line-height:1.2;display:flex;align-items:center;gap:8px}
-.component-card h3 .n{width:22px;height:22px;border-radius:999px;background:#fff;color:#111827;display:grid;place-items:center;font-size:11px;font-weight:900;flex:none}
-.component-card p{margin:0 0 7px;font-size:12px;line-height:1.45;color:#e5edf8}
-.component-card p:last-child{margin-bottom:0}
+#connectors{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:18;overflow:visible}
+.connector{stroke:rgba(255,255,255,.58);stroke-width:1.5;vector-effect:non-scaling-stroke}
+.connector-dot{fill:#fff;stroke:rgba(15,23,42,.9);stroke-width:4;vector-effect:non-scaling-stroke}
+
+#cards{position:fixed;inset:0;pointer-events:none;z-index:20}
+.component-card{position:absolute;width:220px;transform:translateX(-50%);padding:11px 12px 10px;border-radius:14px;background:rgba(15,23,42,.93);border:1px solid rgba(255,255,255,.2);box-shadow:0 14px 36px rgba(0,0,0,.38);backdrop-filter:blur(12px);color:#eef2f8;transition:opacity .12s ease;font-size:11px;line-height:1.36}
+.component-card.hidden{opacity:0;visibility:hidden}
+.component-card h3{margin:0 0 6px;display:flex;align-items:center;gap:7px;font-size:13px;line-height:1.15;color:#fff}
+.component-card .num{width:22px;height:22px;flex:0 0 22px;border-radius:50%;display:grid;place-items:center;background:#fff;color:#111827;font-size:11px;font-weight:900}
+.component-card p{margin:4px 0;color:#dce6f3}
 .component-card strong{color:#fff}
-.component-card::before{content:"";position:absolute;left:var(--tail-left,50%);top:-28px;width:2px;height:28px;background:rgba(255,255,255,.45)}
-.component-card::after{content:"";position:absolute;left:calc(var(--tail-left,50%) - 5px);top:-35px;width:10px;height:10px;border-radius:999px;background:#fff;box-shadow:0 0 0 4px rgba(255,255,255,.14)}
-.hidden{display:none !important}
 
-.mobile-tag{position:absolute;left:0;top:0;transform:translate(-50%,-50%);display:flex;align-items:center;gap:6px;padding:7px 10px;border-radius:999px;background:rgba(15,23,42,.92);border:1px solid rgba(255,255,255,.25);box-shadow:0 10px 24px rgba(0,0,0,.38);font-size:11px;font-weight:700;color:#fff;white-space:nowrap}
-.mobile-tag .dot{width:20px;height:20px;border-radius:999px;background:#fff;color:#111827;display:grid;place-items:center;font-size:11px;font-weight:900;flex:none}
-
-#mobileInfoPanel{display:none;padding:18px 14px 26px;background:#0f1522}
-#mobileInfoPanel h2{margin:0 0 14px;font-size:18px}
-#mobileInfoPanel .mobile-grid{display:grid;grid-template-columns:1fr;gap:12px}
-#mobileInfoPanel .mobile-card{padding:14px;border-radius:16px;background:#111c2d;border:1px solid rgba(255,255,255,.12);box-shadow:0 10px 24px rgba(0,0,0,.18)}
-#mobileInfoPanel .mobile-card h3{margin:0 0 8px;font-size:15px;display:flex;align-items:center;gap:8px}
-#mobileInfoPanel .mobile-card h3 .n{width:24px;height:24px;border-radius:999px;background:#fff;color:#111827;display:grid;place-items:center;font-size:11px;font-weight:900}
-#mobileInfoPanel .mobile-card p{margin:0 0 7px;font-size:13px;line-height:1.48;color:#e5edf8}
-#mobileInfoPanel .mobile-card p:last-child{margin-bottom:0}
-#mobileInfoPanel strong{color:#fff}
-
-@media (max-width: 900px){
-  #viewerWrap{height:70dvh;min-height:460px}
-  .badge{left:12px;bottom:12px;right:112px;font-size:11px;padding:10px 12px}
-  #reset{right:12px;bottom:12px;padding:10px 12px;font-size:12px}
-  #status{top:12px;font-size:12px;padding:8px 12px}
-  #desktopCards{display:none}
-  #mobileTagsLayer{display:block}
-  #mobileInfoPanel{display:block}
-}
-@media (min-width: 901px){
-  #desktopCards{display:block}
-  #mobileTagsLayer,#mobileInfoPanel{display:none}
+@media(max-width:700px){
+  .component-card{width:158px;padding:8px 9px 8px;border-radius:12px;font-size:9.5px;line-height:1.28}
+  .component-card h3{font-size:11px;margin-bottom:5px;gap:5px}
+  .component-card .num{width:19px;height:19px;flex-basis:19px;font-size:10px}
+  #help{left:8px;bottom:8px;right:102px;font-size:10px;padding:8px 9px}
+  #help br{display:none}
+  #reset{right:8px;bottom:8px;padding:9px 10px;font-size:11px}
+  #status{top:8px;font-size:11px;padding:7px 10px}
 }
 </style>
 <script type="importmap">
@@ -62,27 +40,13 @@ canvas{display:block;touch-action:none}
 </script>
 </head>
 <body>
-<div id="app">
-  <div id="viewerWrap">
-    <div id="viewer" aria-label="Visor interactivo de modelo 3D"></div>
-    <div id="desktopCards" class="overlay-layer" aria-hidden="true"></div>
-    <div id="mobileTagsLayer" class="overlay-layer" aria-hidden="true"></div>
-    <div id="status" role="status">Cargando visor…</div>
-    <div class="badge">Click izquierdo: girar · Click derecho: mover cámara · Rueda: zoom<br>En móvil: un dedo para girar · dos para acercar</div>
-    <button id="reset" type="button">Restablecer vista</button>
-  </div>
+<div id="viewer" aria-label="Visor interactivo del solar tracker"></div>
+<svg id="connectors" aria-hidden="true"></svg>
+<div id="cards" aria-label="Información de componentes"></div>
+<div id="status" role="status">Cargando visor…</div>
+<div id="help">Izquierdo: rotar · Derecho: mover · Rueda: zoom<br>En móvil: un dedo para girar · dos para zoom</div>
+<button id="reset" type="button">Restablecer vista</button>
 
-  <section id="mobileInfoPanel" aria-label="Información de componentes del solar tracker">
-    <h2>Componentes del solar tracker</h2>
-    <div class="mobile-grid" id="mobileInfoGrid"></div>
-  </section>
-</div>
-
-<script>
-window.addEventListener('error',()=>{
-  document.getElementById('status').textContent='No se pudo iniciar el visor. Revisa la conexión y la consola del navegador.';
-});
-</script>
 <script type="module">
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
@@ -91,78 +55,75 @@ import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
 import { EXRLoader } from 'three/addons/loaders/EXRLoader.js';
 import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 
-const CONFIG = {
-  modelo: './panel-v1.glb',
-  hdri: './fondo_3d.hdr',
-  mostrarHDRIComoFondo: true,
-  exposicion: 1,
-  giroHDRI: 0,
-  colorFondo: '#151922'
+const CONFIG={
+  modelo:'./panel-v1.glb',
+  hdri:'./fondo_3d.hdr',
+  mostrarHDRIComoFondo:true,
+  exposicion:1,
+  giroHDRI:0,
+  colorFondo:'#151922'
 };
 
-const COMPONENTES = [
+/*
+  IMPORTANTE:
+  Estas referencias ya NO son posiciones aproximadas.
+  Se tomaron de los nombres reales de los nodos del panel-v1.glb que subiste.
+*/
+const COMPONENTES=[
   {
-    id:'servos', numero:'1', nombre:'Servomotores SG90',
-    pos:{x:-0.45,y:0.17,z:0.05},
-    desktopOffset:{x:-110,y:42,tail:70},
-    mobileOffset:{x:-40,y:0},
-    que:'Son actuadores que giran a un ángulo controlado mediante una señal PWM enviada por el Arduino.',
-    rol:'Mueven la estructura del panel para orientarla hacia la mayor fuente de luz. En un sistema de dos ejes, uno puede mover el giro horizontal y otro la inclinación.'
+    numero:1,
+    nombre:'Servomotores SG90',
+    nodos:['Sketchfab_model','Sketchfab_model002'],
+    que:'Actuadores que pueden girar hasta una posición angular controlada.',
+    funcion:'Reciben órdenes del Arduino y mueven la estructura para orientar el panel hacia la zona con mayor luz.'
   },
   {
-    id:'ldr', numero:'2', nombre:'Sensores LDR',
-    pos:{x:0.02,y:0.24,z:-0.08},
-    desktopOffset:{x:-90,y:38,tail:85},
-    mobileOffset:{x:0,y:0},
-    que:'Son fotoresistencias: su resistencia cambia según la cantidad de luz que reciben.',
-    rol:'Funcionan como los “ojos” del solar tracker. El Arduino compara sus lecturas para detectar hacia qué lado hay más iluminación y corregir la posición del panel.'
+    numero:2,
+    nombre:'Arduino Nano',
+    nodos:['Scene_1'],
+    que:'Microcontrolador que ejecuta el programa del sistema.',
+    funcion:'Lee los sensores LDR, compara la intensidad de luz y decide cuánto deben girar los servomotores.'
   },
   {
-    id:'arduino', numero:'3', nombre:'Arduino Nano',
-    pos:{x:-0.08,y:0.02,z:0.02},
-    desktopOffset:{x:10,y:48,tail:45},
-    mobileOffset:{x:25,y:0},
-    que:'Es el microcontrolador que ejecuta el programa y procesa las señales del circuito.',
-    rol:'Lee los voltajes generados por los LDR y las resistencias, compara las diferencias de luz y decide cómo deben girar los servomotores para seguir al sol.'
+    numero:3,
+    nombre:'Protoboard',
+    nodos:['Sketchfab_model001'],
+    que:'Placa de pruebas para conectar componentes sin soldar.',
+    funcion:'Interconecta Arduino, sensores, resistencias y alimentación durante el prototipado del solar tracker.'
   },
   {
-    id:'protoboard', numero:'4', nombre:'Protoboard',
-    pos:{x:0.05,y:-0.02,z:0.02},
-    desktopOffset:{x:110,y:90,tail:26},
-    mobileOffset:{x:30,y:12},
-    que:'Es una placa de pruebas reutilizable que permite armar circuitos sin soldar.',
-    rol:'Sirve como base de conexión del prototipo. Allí se interconectan el Arduino, los LDR, las resistencias y el cableado del sistema.'
+    numero:4,
+    nombre:'Resistencias 10 kΩ',
+    nodos:['Sketchfab_model003','Sketchfab_model009','Sketchfab_model010','Sketchfab_model011'],
+    que:'Componentes eléctricos que controlan la relación entre corriente y voltaje.',
+    funcion:'Junto con los LDR forman divisores de tensión para convertir los cambios de luz en señales que el Arduino puede medir.'
   },
   {
-    id:'resistencias', numero:'5', nombre:'Resistencias',
-    pos:{x:-0.28,y:-0.22,z:0.04},
-    desktopOffset:{x:-95,y:52,tail:95},
-    mobileOffset:{x:-15,y:0},
-    que:'Son componentes que limitan corriente o ayudan a fijar niveles de tensión dentro del circuito.',
-    rol:'Junto con los LDR forman divisores de tensión. Así, los cambios de luz se convierten en voltajes que el Arduino sí puede medir y comparar.'
+    numero:5,
+    nombre:'Sensores LDR',
+    nodos:['Sketchfab_model005','Sketchfab_model006','Sketchfab_model007','Sketchfab_model008'],
+    que:'Fotoresistencias cuya resistencia varía según la cantidad de luz recibida.',
+    funcion:'Actúan como los ojos del tracker: sus diferencias de lectura indican hacia qué dirección debe moverse el panel.'
   },
   {
-    id:'panel', numero:'6', nombre:'Panel solar',
-    pos:{x:0.42,y:-0.28,z:0.02},
-    desktopOffset:{x:-30,y:50,tail:120},
-    mobileOffset:{x:0,y:0},
-    que:'Es el conjunto de celdas fotovoltaicas que transforma la radiación solar en energía eléctrica.',
-    rol:'Es la parte que el tracker busca orientar en la mejor dirección posible. Si el panel mira hacia la zona con más luz, puede captar más energía.'
+    numero:6,
+    nombre:'Panel solar',
+    nodos:['Sketchfab_model012'],
+    que:'Conjunto de celdas fotovoltaicas que transforma la radiación solar en electricidad.',
+    funcion:'Es el elemento que el sistema orienta para mantener una incidencia de luz más favorable y mejorar la captación de energía.'
   }
 ];
 
 const viewer=document.getElementById('viewer');
-const viewerWrap=document.getElementById('viewerWrap');
 const status=document.getElementById('status');
-const desktopCardsLayer=document.getElementById('desktopCards');
-const mobileTagsLayer=document.getElementById('mobileTagsLayer');
-const mobileInfoGrid=document.getElementById('mobileInfoGrid');
+const cardsLayer=document.getElementById('cards');
+const connectors=document.getElementById('connectors');
 
 const scene=new THREE.Scene();
 scene.background=new THREE.Color(CONFIG.colorFondo);
 
-const camera=new THREE.PerspectiveCamera(45,1,0.01,1000);
-const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});
+const camera=new THREE.PerspectiveCamera(45,1,.01,1000);
+const renderer=new THREE.WebGLRenderer({antialias:true});
 renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
 renderer.outputColorSpace=THREE.SRGBColorSpace;
 renderer.toneMapping=THREE.ACESFilmicToneMapping;
@@ -188,59 +149,150 @@ sun.position.set(4,6,5);
 fallbackLights.add(sun);
 scene.add(fallbackLights);
 
-let modelLoaded=false, envLoaded=false, modelBox=null;
+let modelRoot=null;
+let modelLoaded=false;
+let envLoaded=false;
 const warnings=[];
-const desktopEls=new Map();
-const mobileTagEls=new Map();
+const ui=[];
 
-function clamp(value,min,max){return Math.min(max,Math.max(min,value));}
-
-function createDesktopCard(c){
-  const anchor=document.createElement('div');
-  anchor.className='component-anchor hidden';
-  anchor.innerHTML=`
-    <div class="pin">${c.numero}</div>
-    <article class="component-card" style="--tail-left:${c.desktopOffset.tail || 50}px; transform:translate(${c.desktopOffset.x}px, ${c.desktopOffset.y}px);">
-      <h3><span class="n">${c.numero}</span>${c.nombre}</h3>
-      <p><strong>Qué es:</strong> ${c.que}</p>
-      <p><strong>Cómo funciona:</strong> ${c.rol}</p>
-    </article>
-  `;
-  desktopCardsLayer.appendChild(anchor);
-  desktopEls.set(c.id,anchor);
-}
-
-function createMobileTag(c){
-  const tag=document.createElement('div');
-  tag.className='mobile-tag hidden';
-  tag.innerHTML=`<span class="dot">${c.numero}</span><span>${c.nombre}</span>`;
-  mobileTagsLayer.appendChild(tag);
-  mobileTagEls.set(c.id,tag);
-
+function makeCard(component){
   const card=document.createElement('article');
-  card.className='mobile-card';
+  card.className='component-card hidden';
   card.innerHTML=`
-    <h3><span class="n">${c.numero}</span>${c.nombre}</h3>
-    <p><strong>Qué es:</strong> ${c.que}</p>
-    <p><strong>Cómo funciona:</strong> ${c.rol}</p>
-  `;
-  mobileInfoGrid.appendChild(card);
+    <h3><span class="num">${component.numero}</span>${component.nombre}</h3>
+    <p><strong>Qué es:</strong> ${component.que}</p>
+    <p><strong>En el tracker:</strong> ${component.funcion}</p>`;
+  cardsLayer.appendChild(card);
+
+  const line=document.createElementNS('http://www.w3.org/2000/svg','line');
+  line.setAttribute('class','connector');
+  const dot=document.createElementNS('http://www.w3.org/2000/svg','circle');
+  dot.setAttribute('class','connector-dot');
+  dot.setAttribute('r','4');
+  connectors.append(line,dot);
+
+  ui.push({component,card,line,dot,objects:[]});
+}
+COMPONENTES.forEach(makeCard);
+
+function resolveNodes(){
+  ui.forEach(item=>{
+    item.objects=item.component.nodos
+      .map(name=>modelRoot.getObjectByName(name))
+      .filter(Boolean);
+    if(item.objects.length!==item.component.nodos.length){
+      console.warn('No se encontraron todos los nodos de',item.component.nombre,item.component.nodos,item.objects);
+    }
+  });
 }
 
-COMPONENTES.forEach(c=>{
-  createDesktopCard(c);
-  createMobileTag(c);
-});
+function componentBox(objects){
+  const box=new THREE.Box3();
+  box.makeEmpty();
+  objects.forEach(obj=>{
+    obj.updateWorldMatrix(true,true);
+    box.union(new THREE.Box3().setFromObject(obj));
+  });
+  return box;
+}
+
+function projectBox(box,w,h){
+  if(box.isEmpty())return null;
+  const mn=box.min,mx=box.max;
+  const corners=[
+    [mn.x,mn.y,mn.z],[mx.x,mn.y,mn.z],[mn.x,mx.y,mn.z],[mx.x,mx.y,mn.z],
+    [mn.x,mn.y,mx.z],[mx.x,mn.y,mx.z],[mn.x,mx.y,mx.z],[mx.x,mx.y,mx.z]
+  ];
+  const pts=[];
+  for(const c of corners){
+    const v=new THREE.Vector3(...c).project(camera);
+    if(!Number.isFinite(v.x)||!Number.isFinite(v.y)||!Number.isFinite(v.z))continue;
+    pts.push({x:(v.x+1)*.5*w,y:(1-v.y)*.5*h,z:v.z});
+  }
+  if(!pts.length)return null;
+  return {
+    minX:Math.min(...pts.map(p=>p.x)),maxX:Math.max(...pts.map(p=>p.x)),
+    minY:Math.min(...pts.map(p=>p.y)),maxY:Math.max(...pts.map(p=>p.y)),
+    z:pts.reduce((a,p)=>a+p.z,0)/pts.length
+  };
+}
+
+function clamp(v,min,max){return Math.max(min,Math.min(max,v));}
+
+function updateComponentUI(){
+  if(!modelLoaded)return;
+  const w=window.innerWidth,h=window.innerHeight;
+  const mobile=w<=700;
+  const cardW=mobile?158:220;
+  const margin=mobile?7:10;
+
+  const placed=[];
+
+  for(const item of ui){
+    if(!item.objects.length){hideItem(item);continue;}
+    const box=componentBox(item.objects);
+    const screen=projectBox(box,w,h);
+    if(!screen || screen.z<-1.3 || screen.z>1.3 || screen.maxX<-50 || screen.minX>w+50 || screen.maxY<-50 || screen.minY>h+50){
+      hideItem(item);continue;
+    }
+
+    item.card.classList.remove('hidden');
+    item.line.style.display='';
+    item.dot.style.display='';
+
+    const cardH=item.card.offsetHeight||90;
+    let x=(screen.minX+screen.maxX)/2;
+    let y=screen.maxY+(mobile?8:12);
+
+    x=clamp(x,cardW/2+margin,w-cardW/2-margin);
+    y=clamp(y,margin,h-cardH-margin);
+
+    /* Separación sencilla para que las tarjetas no se monten entre sí. */
+    let attempts=0;
+    while(attempts<10){
+      const rect={left:x-cardW/2,right:x+cardW/2,top:y,bottom:y+cardH};
+      const hit=placed.find(r=>!(rect.right<r.left || rect.left>r.right || rect.bottom<r.top || rect.top>r.bottom));
+      if(!hit)break;
+      y=hit.bottom+8;
+      if(y+cardH>h-margin){
+        y=Math.max(margin,screen.minY-cardH-10);
+        x=clamp(x+(attempts%2===0?cardW*.72:-cardW*.72),cardW/2+margin,w-cardW/2-margin);
+      }
+      attempts++;
+    }
+
+    item.card.style.left=x+'px';
+    item.card.style.top=y+'px';
+    placed.push({left:x-cardW/2,right:x+cardW/2,top:y,bottom:y+cardH});
+
+    const anchorX=clamp((screen.minX+screen.maxX)/2,0,w);
+    const anchorY=clamp(screen.maxY,0,h);
+    const lineEndX=x;
+    const lineEndY=y;
+    item.line.setAttribute('x1',anchorX);
+    item.line.setAttribute('y1',anchorY);
+    item.line.setAttribute('x2',lineEndX);
+    item.line.setAttribute('y2',lineEndY);
+    item.dot.setAttribute('cx',anchorX);
+    item.dot.setAttribute('cy',anchorY);
+  }
+}
+
+function hideItem(item){
+  item.card.classList.add('hidden');
+  item.line.style.display='none';
+  item.dot.style.display='none';
+}
 
 function updateStatus(){
   if(!modelLoaded){
-    status.textContent=warnings.some(w=>w.startsWith('Modelo')) ? warnings.join(' · ') : 'Cargando modelo…';
     status.hidden=false;
+    status.textContent=warnings.some(w=>w.startsWith('Modelo'))?warnings.join(' · '):'Cargando modelo…';
     return;
   }
-  if(CONFIG.hdri && !envLoaded && !warnings.some(w=>w.startsWith('HDRI'))){
-    status.textContent='Modelo listo · cargando HDRI…';
+  if(CONFIG.hdri&&!envLoaded&&!warnings.some(w=>w.startsWith('HDRI'))){
     status.hidden=false;
+    status.textContent='Modelo listo · cargando HDRI…';
     return;
   }
   status.textContent=warnings.join(' · ');
@@ -250,15 +302,15 @@ function updateStatus(){
 function frameModel(model){
   model.updateMatrixWorld(true);
   const box=new THREE.Box3().setFromObject(model);
-  if(box.isEmpty()) throw new Error('El GLB no contiene geometría visible.');
+  if(box.isEmpty())throw new Error('El GLB no contiene geometría visible.');
   const center=box.getCenter(new THREE.Vector3());
-  const radius=Math.max(box.getSize(new THREE.Vector3()).length()/2,0.001);
-  const verticalFov=THREE.MathUtils.degToRad(camera.fov);
-  const horizontalFov=2*Math.atan(Math.tan(verticalFov/2)*camera.aspect);
-  const distance=radius/Math.sin(Math.min(verticalFov,horizontalFov)/2)*1.15;
+  const radius=Math.max(box.getSize(new THREE.Vector3()).length()/2,.001);
+  const vfov=THREE.MathUtils.degToRad(camera.fov);
+  const hfov=2*Math.atan(Math.tan(vfov/2)*camera.aspect);
+  const distance=radius/Math.sin(Math.min(vfov,hfov)/2)*1.15;
   initialTarget.copy(center);
   initialPosition.copy(center).add(new THREE.Vector3(1,.6,1).normalize().multiplyScalar(distance));
-  camera.near=Math.max(radius/1000,0.000001);
+  camera.near=Math.max(radius/1000,.000001);
   camera.far=Math.max(radius*100,distance*10);
   camera.updateProjectionMatrix();
   controls.minDistance=radius*.15;
@@ -274,71 +326,24 @@ function resetView(){
 document.getElementById('reset').onclick=resetView;
 
 function resize(){
-  const width=viewer.clientWidth;
-  const height=viewer.clientHeight;
-  renderer.setSize(width,height);
-  camera.aspect=width/height;
+  const w=viewer.clientWidth,h=viewer.clientHeight;
+  renderer.setSize(w,h);
+  camera.aspect=w/h;
   camera.updateProjectionMatrix();
+  connectors.setAttribute('viewBox',`0 0 ${window.innerWidth} ${window.innerHeight}`);
 }
 new ResizeObserver(resize).observe(viewer);
 resize();
-
-function worldPosFromRelative(c){
-  if(!modelBox) return null;
-  const center=modelBox.getCenter(new THREE.Vector3());
-  const size=modelBox.getSize(new THREE.Vector3());
-  return new THREE.Vector3(
-    center.x + c.pos.x*size.x,
-    center.y + c.pos.y*size.y,
-    center.z + c.pos.z*size.z
-  );
-}
-
-function updateOverlayPositions(){
-  if(!modelLoaded || !modelBox) return;
-  const width=viewer.clientWidth;
-  const height=viewer.clientHeight;
-  const isMobile=window.innerWidth<=900;
-
-  COMPONENTES.forEach(c=>{
-    const p=worldPosFromRelative(c);
-    if(!p) return;
-    const v=p.clone().project(camera);
-    const visible=v.z>-1 && v.z<1 && v.x>-1.3 && v.x<1.3 && v.y>-1.3 && v.y<1.3;
-    const sx=((v.x+1)/2)*width;
-    const sy=((1-v.y)/2)*height;
-
-    const desktopEl=desktopEls.get(c.id);
-    const mobileEl=mobileTagEls.get(c.id);
-    if(desktopEl){
-      desktopEl.classList.toggle('hidden', !visible || isMobile);
-      if(visible && !isMobile){
-        const safeX=clamp(sx,50,width-50);
-        const safeY=clamp(sy,40,height-40);
-        desktopEl.style.left=safeX+'px';
-        desktopEl.style.top=safeY+'px';
-      }
-    }
-    if(mobileEl){
-      mobileEl.classList.toggle('hidden', !visible || !isMobile);
-      if(visible && isMobile){
-        const ox=(c.mobileOffset?.x||0);
-        const oy=(c.mobileOffset?.y||0);
-        mobileEl.style.left=clamp(sx+ox,60,width-60)+'px';
-        mobileEl.style.top=clamp(sy+oy,32,height-32)+'px';
-      }
-    }
-  });
-}
 
 async function loadModel(){
   try{
     const loader=new GLTFLoader();
     loader.setMeshoptDecoder(MeshoptDecoder);
     const gltf=await loader.loadAsync(CONFIG.modelo);
-    scene.add(gltf.scene);
-    modelBox=new THREE.Box3().setFromObject(gltf.scene);
-    frameModel(gltf.scene);
+    modelRoot=gltf.scene;
+    scene.add(modelRoot);
+    frameModel(modelRoot);
+    resolveNodes();
     modelLoaded=true;
   }catch(error){
     warnings.push('Modelo: no se pudo cargar. Revisa la ruta del GLB y que sea válido.');
@@ -351,11 +356,11 @@ async function loadEnvironment(){
   if(!CONFIG.hdri){updateStatus();return;}
   try{
     const path=new URL(CONFIG.hdri,document.baseURI).pathname.toLowerCase();
-    const loader=path.endsWith('.exr') ? new EXRLoader() : new RGBELoader();
+    const loader=path.endsWith('.exr')?new EXRLoader():new RGBELoader();
     const texture=await loader.loadAsync(CONFIG.hdri);
     texture.mapping=THREE.EquirectangularReflectionMapping;
     scene.environment=texture;
-    if(CONFIG.mostrarHDRIComoFondo) scene.background=texture;
+    if(CONFIG.mostrarHDRIComoFondo)scene.background=texture;
     const angle=THREE.MathUtils.degToRad(CONFIG.giroHDRI);
     scene.environmentRotation.y=angle;
     scene.backgroundRotation.y=angle;
@@ -372,7 +377,7 @@ loadModel();
 loadEnvironment();
 renderer.setAnimationLoop(()=>{
   controls.update();
-  updateOverlayPositions();
+  updateComponentUI();
   renderer.render(scene,camera);
 });
 </script>
